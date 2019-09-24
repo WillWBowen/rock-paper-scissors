@@ -1,0 +1,82 @@
+<script>
+  function game() {
+    while(gameLoop()){
+      // game will play as long as user clicks ok
+    }
+    return
+  }
+  function gameLoop() {
+    let message = "Let's play Rock Paper Scissors!\n\n" + 
+                  "Best 3 out of 5 wins! Ties and typos won't count!"
+    let playerScore = 0
+    let computerScore = 0
+    while(playerScore < 3 && computerScore < 3) {
+      let playerChoice = prompt(message + "\n\nEnter your choice...")
+      result = playRound(playerChoice, computerPlay())
+      message = result.message
+      if(result.badInput) continue;
+      message = "I chose " + result.computer + ".\n\n" + message
+      if(result.outcome < 0) computerScore++
+      if(result.outcome > 0) playerScore++
+    }
+    if(playerScore > computerScore) {
+      message = "Congratulations!! You won!!"
+    } else {
+      message = "I won!! Better luck next time."
+    }
+    return confirm(message + "\n\nWould you like to play again?")
+  }
+  function computerPlay() {
+    let choices = ['rock', 'paper', 'scissors']
+    let choice = Math.floor(Math.random() * 3)
+    return choices[choice]
+  }
+  function playRound(playerSelection, computerSelection) {
+    playerSelection = playerSelection.toLowerCase()
+    let result = {}
+    result.message = ""
+    result.outcome = 0
+    result.badInput = false
+    result.computer = computerSelection
+    if(playerSelection === computerSelection) {
+      result.message = "You tied! Try again!"
+    }
+    else {
+      switch(playerSelection) {
+        case 'rock':
+          if(computerSelection === 'paper') {
+            result.message = 'You Lose! Paper beats Rock'
+            result.outcome--
+
+          } else {
+            result.message = 'You Win! Rock beats Scissors'
+            result.outcome++
+          }
+          break
+        case 'paper':
+          if(computerSelection === 'rock') {
+            result.message = 'You Win! Paper beats Rock'
+            result.outcome++
+          } else {
+            result.message = 'You Lose! Scissors beats Paper'
+            result.outcome--
+          }
+          break
+        case 'scissors':
+          if(computerSelection === 'paper') {
+            result.message = 'You Win! Scissors beats Paper'
+            result.outcome++
+          } else {
+            result.message = 'You Lose! Rock beats Scissors'
+            result.outcome--
+          }
+          break
+        default:
+          result.message = "Please enter a valid selection. (rock, paper, scissors)"
+          result.badInput = true;
+          break
+      }
+    }
+    return result
+  }
+</script>
